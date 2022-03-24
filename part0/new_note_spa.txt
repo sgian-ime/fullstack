@@ -1,0 +1,23 @@
+title SPA New note
+
+note over browser:
+    User enters a note into the notes
+    form, and then selects the submit button.
+    Form data, along with current time
+    is rendered on the brower along with the
+    other notes previously fetched. 
+    A POST request with the users note is
+    then sent to the server.
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+note over server:
+    Server takes takes the form data
+    and pushes content of the form to 
+    data.json. Server then responds with
+    201 created, indicating that the request
+    was successful
+end note
+
+server->browser: 201 created

@@ -1,0 +1,17 @@
+title Visit Single Page App
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/spa
+server-->browser: HTML code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/spa.js
+server-->browser: spa.js
+note over browser:
+    spa.js requests JSON data from server
+end note
+browser->server: HTTP GET https://studies.cs.helsinki.fi/data.json
+server-->browser: [{ content: "Hello world!", date: "2022-03-24"}, ...]
+note over browser:
+    browser executes the event handler in spa.js
+    to properly displays the notes 
+end note
