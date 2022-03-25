@@ -7,9 +7,7 @@ const Button = (props) => (
 
 const Statistics = (props) => {
 
-  let good = props.goodArr[0]
-  let neutral = props.neutralArr[0]
-  let bad = props.badArr[0]
+  let {good, neutral, bad} = props
 
   let all = good + neutral + bad
 
@@ -33,17 +31,11 @@ const Statistics = (props) => {
 
   return (
     <div>
-      <h1>give feedback</h1>
-
-      <Button handleClick={props.goodArr[1]} label={"good"} />
-      <Button handleClick={props.neutralArr[1]} label={"neutral"} />
-      <Button handleClick={props.badArr[1]} label={"bad"} />
 
       <h1>statistics</h1>
-
-      <p>good: {props.goodArr[0]}</p>
-      <p>neutral: {props.neutralArr[0]}</p>
-      <p>bad: {props.badArr[0]}</p>
+      <p>good: {good}</p>
+      <p>neutral: {neutral}</p>
+      <p>bad: {bad}</p>
       <p>all: {all}</p>
       <p>average: {average}</p>
       <p>positive: {positve}%</p>
@@ -75,7 +67,10 @@ const App = () => {
     <div>
       <h1>give feedback</h1>
 
-      <Statistics goodArr={[good, goodButton()]} neutralArr={[neutral, neutralButton()]} badArr={[bad, badButton()]}/>
+      <Button handleClick={goodButton()} label={"good"} />
+      <Button handleClick={neutralButton()} label={"neutral"} />
+      <Button handleClick={badButton()} label={"bad"} />
+      <Statistics good={good} neutral={neutral} bad={bad}/>
 
     </div>
   )
