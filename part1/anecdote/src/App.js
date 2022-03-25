@@ -25,12 +25,32 @@ const App = () => {
     setVote(copy)
   }
 
+  function getMostVotesIndex() {
+    var largest = 0
+    var index = 0
+
+    for (var i = 0; i < votes.length; i++) {
+      if (largest < votes[i]) {
+        largest = votes[i]
+        index = i
+      }
+    }
+    return index
+  }
+  
+  const mostVotesIndex = getMostVotesIndex()
+  console.log(mostVotesIndex)
+
   return (
     <div>
       <p>{anecdotes[selected]}</p>
       <p>Has {votes[selected]} votes</p>
       <button onClick={voteButton()}>upvote</button>
       <button onClick={anecdoteButton()}>New Anecdote</button>
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[mostVotesIndex]}</p>
+      <p>Has {votes[mostVotesIndex]} votes</p>
+
     </div>
   )
 }
