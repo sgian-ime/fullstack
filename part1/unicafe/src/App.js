@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-
 const Button = (props) => (
   <button onClick={props.handleClick}>{props.label}</button>
 )
@@ -33,14 +32,14 @@ const Statistics = (props) => {
     if (all === 0) {
       return 0
     }
-    return (good + bad * -1) / all
+    return ((good + bad * -1) / all).toFixed(2)
   }
 
   function getPostive() {
     if (good === 0) {
       return "0%"
     }
-    return ((good / all) * 100) + '%'
+    return ((good / all) * 100).toFixed(2) + '%'
   }
   
   let average = getAverage()
@@ -59,7 +58,6 @@ const Statistics = (props) => {
     </table>
   )
 }
-
 
 const App = () => {
   // save clicks of each button to its own state
