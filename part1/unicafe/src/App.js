@@ -5,11 +5,24 @@ const Button = (props) => (
   <button onClick={props.handleClick}>{props.label}</button>
 )
 
+const StatisticsLine = (props) => {
+    <p>{props.text}: {props.value}</p>
+}
+
 const Statistics = (props) => {
 
   let {good, neutral, bad} = props
-
   let all = good + neutral + bad
+
+  // Checks if there have been any statistics submitted yet
+  // and exits early if there haven't been
+  if (all === 0) {
+    return (
+      <div>
+        <p>No feedback given yet</p>
+      </div>
+    )
+  }
 
   function getAverage() {
     if (all === 0) {
@@ -20,9 +33,9 @@ const Statistics = (props) => {
 
   function getPostive() {
     if (good === 0) {
-      return 0
+      return "0%"
     }
-    return (good / all) * 100
+    return ((good / all) * 100) + '%'
   }
   
   let average = getAverage()
@@ -31,14 +44,11 @@ const Statistics = (props) => {
 
   return (
     <div>
-
-      <h1>statistics</h1>
-      <p>good: {good}</p>
-      <p>neutral: {neutral}</p>
-      <p>bad: {bad}</p>
-      <p>all: {all}</p>
-      <p>average: {average}</p>
-      <p>positive: {positve}%</p>
+      <StatisticsLine text="good" value={good}/>
+      <StatisticsLine text="neutral" value={neutral}/>
+      <StatisticsLine text="bad" value={bad}/>
+      <StatisticsLine text="average" value={average}/>
+      <StatisticsLine text="positive" value={positve}/>
     </div>
   )
 }
@@ -62,7 +72,6 @@ const App = () => {
     setBad(bad + 1)
   }
 
-
   return (
     <div>
       <h1>give feedback</h1>
@@ -70,6 +79,7 @@ const App = () => {
       <Button handleClick={goodButton()} label={"good"} />
       <Button handleClick={neutralButton()} label={"neutral"} />
       <Button handleClick={badButton()} label={"bad"} />
+      <p>Statistics</p>
       <Statistics good={good} neutral={neutral} bad={bad}/>
 
     </div>
