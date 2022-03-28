@@ -14,18 +14,18 @@ const App = () => {
   const [votes, setVote] = useState(Array(anecdotes.length).fill(0))
   const [selected, setSelected] = useState(0)
 
-  const anecdoteButton = () => () => {
+  const anecdoteButton = () => {
     const random = Math.floor(Math.random() * anecdotes.length)
     setSelected(random)
   }
 
-  const voteButton = () => () => {
+  const voteButton = () => {
     const copy = [...votes]
     copy[selected] += 1
     setVote(copy)
   }
 
-  function getMostVotesIndex() {
+  const getMostVotesIndex = () => {
     var largest = 0
     var index = 0
 
@@ -39,14 +39,13 @@ const App = () => {
   }
   
   const mostVotesIndex = getMostVotesIndex()
-  console.log(mostVotesIndex)
 
   return (
     <div>
       <p>{anecdotes[selected]}</p>
       <p>Has {votes[selected]} votes</p>
-      <button onClick={voteButton()}>upvote</button>
-      <button onClick={anecdoteButton()}>New Anecdote</button>
+      <button onClick={voteButton}>upvote</button>
+      <button onClick={anecdoteButton}>New Anecdote</button>
       <h1>Anecdote with most votes</h1>
       <p>{anecdotes[mostVotesIndex]}</p>
       <p>Has {votes[mostVotesIndex]} votes</p>
@@ -54,5 +53,6 @@ const App = () => {
     </div>
   )
 }
+
 
 export default App
