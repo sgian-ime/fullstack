@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-
 import personService from "./services/persons"
+import "./index.css"
 
 const Person = ({name, number, removePerson}) => {
   return (  
@@ -8,14 +8,11 @@ const Person = ({name, number, removePerson}) => {
       <p>{name}: {number}   <button onClick={removePerson}>Delete</button></p>
     </>
   )
-
 }
-
-
 
 const Persons = ({shownPeople, removePeople}) => {
   return (
-    <div>
+    <>
       {shownPeople.map(person =>
         <Person 
           key={person.id} 
@@ -24,19 +21,17 @@ const Persons = ({shownPeople, removePeople}) => {
           removePerson={() => removePeople(person)}
         />
       )}
-    </div>
+    </>
   )
 }
 
 const Filter = ({searchPersons, newSearch, handleSearchChange}) => {
   return (
     <form onSubmit={searchPersons}>
-      <div>
         search: 
         <input 
           value={newSearch}
           onChange={handleSearchChange}/>
-      </div>
     </form>
   )
 }
@@ -45,21 +40,32 @@ const PersonForm = ({addPersons, newName, newNumber, handleNameChange, handleNum
    return (
     <>
       <form onSubmit={addPersons}>
-        <div>name: 
+        name: 
           <input 
             value={newName}
-            onChange={handleNameChange}/>
-        </div>
-        <div>number: 
+            onChange={handleNameChange}
+          />
+        <br/>
+        number: 
           <input 
             value={newNumber}
             onChange={handleNumberChange}/>
-        </div>
-        <div>
+        <br/>
           <button type="submit">add</button>
-        </div>
       </form>
     </>
+  )
+}
+
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='notification'>
+      {message}
+    </div>
   )
 }
 
@@ -69,6 +75,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
   const [shownPeople, setShownPeople] = useState([])
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     personService
@@ -115,6 +122,12 @@ const App = () => {
       .then(returnedPeople => {
         setPersons(persons.concat(returnedPeople))
       })
+    
+    setNotification(`Added ${personsObject.name}`)
+
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
 
     setNewName('')
     setNewNumber('')
@@ -132,7 +145,6 @@ const App = () => {
     }
   }
 
-
   const searchPersons = (event) => {
     
     event.preventDefault()
@@ -140,23 +152,21 @@ const App = () => {
     setShownPeople([])
 
     var tempArray = []
-    console.log(newSearch);
     
-
     persons.forEach(person => {
       if (person.name.toLowerCase().includes(newSearch.toLowerCase())) {
         tempArray.push(person)
       }
     })
-    console.log(tempArray)
     setShownPeople(tempArray)
     setNewSearch('')
   }
 
   return (
-    <div>
+    <>
+      <h1>Phonebook</h1>
 
-      <h2>Phonebook</h2>
+      <Notification message={notification} />
 
       <Filter 
         handleSearchChange={handleSearchChange}
@@ -181,8 +191,7 @@ const App = () => {
         shownPeople={shownPeople} 
         removePeople={removePersonById}  
       />
-
-    </div>
+    </>
   )
 }
 
