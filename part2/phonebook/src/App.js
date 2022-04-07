@@ -1,13 +1,28 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
-const Person = ({name, number}) => <p>{name}: {number}</p>
+import personService from "./services/persons"
 
-const Persons = ({shownPeople}) => {
+const Person = ({name, number, removePerson}) => {
+  return (  
+    <>
+      <p>{name}: {number}   <button onClick={removePerson}>Delete</button></p>
+    </>
+  )
+
+}
+
+
+
+const Persons = ({shownPeople, removePeople}) => {
   return (
     <div>
       {shownPeople.map(person =>
-        <Person key={person.name} name={person.name} number={person.number} />
+        <Person 
+          key={person.id} 
+          name={person.name} 
+          number={person.number} 
+          removePerson={() => removePeople(person)}
+        />
       )}
     </div>
   )
@@ -56,10 +71,13 @@ const App = () => {
   const [shownPeople, setShownPeople] = useState([])
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(repsonse => {
-        setPersons(repsonse.data)
+    personService
+      .getAll()
+      .then(people => {
+        setPersons(people)
+      })
+      .catch(error => {
+        alert("Could not retrive notes from server!")
       })
   }, [])
 
@@ -92,10 +110,28 @@ const App = () => {
       number: newNumber
     }
 
-    setPersons(persons.concat(personsObject))
+    personService
+      .create(personsObject)
+      .then(returnedPeople => {
+        setPersons(persons.concat(returnedPeople))
+      })
+
     setNewName('')
     setNewNumber('')
   }
+
+  const removePersonById = (person) => {
+
+    const removedId = person.id
+
+    if (window.confirm(`Delete ${person.name} from the phonebook?`)) {
+      personService
+        .remove(removedId)
+    
+      setPersons(persons.filter(person => person.id !== removedId))
+    }
+  }
+
 
   const searchPersons = (event) => {
     
@@ -141,7 +177,10 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Persons shownPeople={shownPeople} />
+      <Persons 
+        shownPeople={shownPeople} 
+        removePeople={removePersonById}  
+      />
 
     </div>
   )
